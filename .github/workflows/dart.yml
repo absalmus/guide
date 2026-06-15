@@ -1,0 +1,59 @@
+name: iOS-ipa-build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-ios:
+    name: 🎉 iOS Build
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          architecture: x64
+
+      - run: flutter pub get
+
+      - run: pod repo update
+        working-directory: ios
+
+      - run: flutter build ios --release --no-codesign
+
+      - run: mkdir Payload
+        working-directory: build/ios/iphoneos
+
+      - run: mv Runner.app/ Payload
+        working-directory: build/ios/iphoneos
+
+      - name: Zip output
+        run: zip -qq -r -9 FlutterIpaExport.ipa Payload
+        working-directory: build/ios/iphoneos
+
+      # ✅ Create Tag Automatically
+      - name: Create Git Tag v1.0 if not exists
+        run: |
+          git fetch --tags
+          if git rev-parse "v1.0" >/dev/null 2>&1; then
+            echo "Tag v1.0 already exists"
+          else
+            echo "Creating tag v1.0..."
+            git tag v1.0
+            git push origin v1.0
+          fi
+
+      # ✅ Upload IPA + Create Release Automatically
+      - name: Upload binaries to GitHub Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/ios/iphoneos/FlutterIpaExport.ipa
+          tag: v2.0
+          overwrite: true
+          body: "This is 2 release"
