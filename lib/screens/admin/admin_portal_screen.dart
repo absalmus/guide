@@ -14,6 +14,7 @@ class AdminPortalScreen extends StatefulWidget {
 
 class _AdminPortalScreenState extends State<AdminPortalScreen> {
   late List<Church> _churches;
+  late final LocationService _locationService;
   Church? _selectedChurch;
   bool _isCreatingNew = false;
 
@@ -29,10 +30,28 @@ class _AdminPortalScreenState extends State<AdminPortalScreen> {
   @override
   void initState() {
     super.initState();
+    _locationService = context.read<LocationService>();
+    _churches = _locationService.churches.toList();
+    // Listen for updates from LocationService so UI refreshes when data arrives
+    _locationService.addListener(_onLocationServiceChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final locationService = context.read<LocationService>();
-      _churches = locationService.churches.toList();
-      if (_churches.isNotEmpty) {
+      if (mounted) {
+        setState(() {
+          _churches = _locationService.churches.toList();
+          if (_churches.isNotEmpty) {
+            _setSelectedChurch(_churches.first);
+          }
+        });
+      }
+    });
+  }
+
+  void _onLocationServiceChanged() {
+    if (!mounted) return;
+    final updated = _locationService.churches.toList();
+    setState(() {
+      _churches = updated;
+      if (_selectedChurch == null && _churches.isNotEmpty) {
         _setSelectedChurch(_churches.first);
       }
     });
@@ -158,6 +177,7 @@ class _AdminPortalScreenState extends State<AdminPortalScreen> {
 
   @override
   void dispose() {
+    _locationService.removeListener(_onLocationServiceChanged);
     _nameController.dispose();
     _governorateController.dispose();
     _dioceseController.dispose();

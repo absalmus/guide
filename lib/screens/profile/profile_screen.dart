@@ -148,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onChanged: (_) => themeProvider.toggle(),
             ),
             const SizedBox(height: 16),
-            if (profile?.email == kAdminEmail)
+            if (profile?.isAdmin ?? false)
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: SizedBox(

@@ -12,6 +12,7 @@ class UserProfile {
     this.favoriteChurchIds = const [],
     this.phone,
     this.profileComplete = false,
+    this.isAdmin = false,
   });
 
   final String id;
@@ -24,6 +25,7 @@ class UserProfile {
   final List<String> favoriteChurchIds;
   final String? phone;
   final bool profileComplete;
+  final bool isAdmin;
 
   UserProfile copyWith({
     String? name,
@@ -33,6 +35,7 @@ class UserProfile {
     AgeCategory? category,
     List<String>? favoriteChurchIds,
     bool? profileComplete,
+    bool? isAdmin,
   }) {
     return UserProfile(
       id: id,
@@ -45,20 +48,22 @@ class UserProfile {
       favoriteChurchIds: favoriteChurchIds ?? this.favoriteChurchIds,
       phone: phone,
       profileComplete: profileComplete ?? this.profileComplete,
+      isAdmin: isAdmin ?? this.isAdmin,
     );
   }
 
   Map<String, dynamic> toMap() => {
-        'name': name,
-        'email': email,
-        'age': age,
-        'governorate': governorate,
-        'churchId': churchId,
-        'category': category.name,
-        'favoriteChurchIds': favoriteChurchIds,
-        'phone': phone,
-        'profileComplete': profileComplete,
-      };
+    'name': name,
+    'email': email,
+    'age': age,
+    'governorate': governorate,
+    'churchId': churchId,
+    'category': category.name,
+    'favoriteChurchIds': favoriteChurchIds,
+    'phone': phone,
+    'profileComplete': profileComplete,
+    'isAdmin': isAdmin,
+  };
 
   factory UserProfile.fromMap(String id, Map<String, dynamic> map) {
     return UserProfile(
@@ -72,10 +77,12 @@ class UserProfile {
         (c) => c.name == map['category'],
         orElse: () => AgeCategory.youth,
       ),
-      favoriteChurchIds:
-          List<String>.from(map['favoriteChurchIds'] as List? ?? []),
+      favoriteChurchIds: List<String>.from(
+        map['favoriteChurchIds'] as List? ?? [],
+      ),
       phone: map['phone'] as String?,
       profileComplete: map['profileComplete'] as bool? ?? false,
+      isAdmin: map['isAdmin'] as bool? ?? false,
     );
   }
 }

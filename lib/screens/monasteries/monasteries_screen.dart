@@ -79,6 +79,29 @@ class _MonasteriesScreenState extends State<MonasteriesScreen> {
           }
 
           Widget listSection() {
+            if (monasteries.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.temple_buddhist,
+                        size: 48,
+                        color: Colors.grey.shade400,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'لا توجد أديرة محفوظة بعد',
+                        style: TextStyle(color: Colors.grey.shade600),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
             return ListView.separated(
               padding: const EdgeInsets.all(12),
               itemCount: monasteries.length,

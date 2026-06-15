@@ -46,8 +46,7 @@ GoRouter createRouter(AuthService authService) {
         return '/complete-profile';
       }
 
-      if (path == '/admin' &&
-          authService.currentProfile?.email != kAdminEmail) {
+      if (path == '/admin' && !(authService.currentProfile?.isAdmin ?? false)) {
         return '/home';
       }
 

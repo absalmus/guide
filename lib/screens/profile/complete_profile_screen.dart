@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:stitch_smart_church_guide/core/constants/app_constants.dart';
 import 'package:stitch_smart_church_guide/core/constants/enums.dart';
 import 'package:stitch_smart_church_guide/services/auth_service.dart';
 import 'package:stitch_smart_church_guide/services/location_service.dart';
@@ -111,20 +112,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                 final governorates = context
                     .watch<LocationService>()
                     .availableGovernorates;
-                if (governorates.isEmpty) {
-                  return TextField(
-                    textAlign: TextAlign.right,
-                    decoration: const InputDecoration(
-                      labelText: 'المحافظة',
-                      prefixIcon: Icon(Icons.location_city),
-                    ),
-                    onChanged: (value) => setState(
-                      () => _governorate = value.trim().isEmpty
-                          ? null
-                          : value.trim(),
-                    ),
-                  );
-                }
+                final displayGovernorates = governorates.isEmpty
+                    ? kEgyptianGovernorates
+                    : governorates;
 
                 return DropdownButtonFormField<String>(
                   initialValue: _governorate,
@@ -132,7 +122,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                     labelText: 'المحافظة',
                     prefixIcon: Icon(Icons.location_city),
                   ),
-                  items: governorates
+                  items: displayGovernorates
                       .map((g) => DropdownMenuItem(value: g, child: Text(g)))
                       .toList(),
                   onChanged: (v) => setState(() => _governorate = v),
