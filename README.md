@@ -37,13 +37,9 @@ flutterfire configure
 - Authentication (Email, Google, Phone)
 - Cloud Firestore
 
-### 2. Google Maps
+### 2. Maps
 
-- أنشئ API Key من [Google Cloud Console](https://console.cloud.google.com/)
-- فعّل Maps SDK for Android و iOS
-- ضع المفتاح في:
-  - `android/app/src/main/AndroidManifest.xml` → `com.google.android.geo.API_KEY`
-  - `ios/Runner/AppDelegate.swift` → `GMSServices.provideAPIKey`
+- التطبيق يستخدم `flutter_map` مع OpenStreetMap، فلا يحتاج API Key من Google Maps.
 
 ### 3. Google Sign-In
 
