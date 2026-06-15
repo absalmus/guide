@@ -106,18 +106,38 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            DropdownButtonFormField<String>(
-              initialValue: _governorate,
-              decoration: const InputDecoration(
-                labelText: 'المحافظة',
-                prefixIcon: Icon(Icons.location_city),
-              ),
-              items: context
-                  .watch<LocationService>()
-                  .availableGovernorates
-                  .map((g) => DropdownMenuItem(value: g, child: Text(g)))
-                  .toList(),
-              onChanged: (v) => setState(() => _governorate = v),
+            Builder(
+              builder: (context) {
+                final governorates = context
+                    .watch<LocationService>()
+                    .availableGovernorates;
+                if (governorates.isEmpty) {
+                  return TextField(
+                    textAlign: TextAlign.right,
+                    decoration: const InputDecoration(
+                      labelText: 'المحافظة',
+                      prefixIcon: Icon(Icons.location_city),
+                    ),
+                    onChanged: (value) => setState(
+                      () => _governorate = value.trim().isEmpty
+                          ? null
+                          : value.trim(),
+                    ),
+                  );
+                }
+
+                return DropdownButtonFormField<String>(
+                  initialValue: _governorate,
+                  decoration: const InputDecoration(
+                    labelText: 'المحافظة',
+                    prefixIcon: Icon(Icons.location_city),
+                  ),
+                  items: governorates
+                      .map((g) => DropdownMenuItem(value: g, child: Text(g)))
+                      .toList(),
+                  onChanged: (v) => setState(() => _governorate = v),
+                );
+              },
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
