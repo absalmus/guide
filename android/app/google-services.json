@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "807067566139",
+    "project_id": "guide-aabec",
+    "storage_bucket": "guide-aabec.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807067566139:android:ea0b3f83f20a23ca151c1e",
+        "android_client_info": {
+          "package_name": "com.example.stitch_smart_church_guide"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfIZjy0AN7BE8p32GqoDFu8eYmiudQAxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
